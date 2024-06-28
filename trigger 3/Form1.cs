@@ -32,6 +32,10 @@ namespace trigger_3
 
         Form2 form2; // Declare overlayForm as a field in your Form1 class
 
+        private Color targetColor = Color.Red; // Default target color
+        private int colorTolerance = 100; // Adjust as needed for sensitivity
+
+
         public Form1()
         {
             InitializeComponent();
@@ -51,6 +55,19 @@ namespace trigger_3
                 detectionThread = new Thread(DetectColorChange);
                 detectionThread.Start();
                 lblStatus.Text = "Detecting.";
+            }
+        }
+
+        private void btnSelectColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                targetColor = colorDialog.Color;
+                // Optionally update UI to reflect selected color
+                // For example, change the background color of a label to show the selected color
+                lblSelectedColor.BackColor = targetColor;
             }
         }
 
@@ -86,46 +103,34 @@ namespace trigger_3
                         g.CopyFromScreen(0, 0, 0, 0, screenshot.Size);
                     }
 
-                    // Define the target red sensitivity
-                    int redThreshold = 100; // Adjust as needed for sensitivity
-                    int redDifferenceThreshold = 50; // Minimum difference between red and green/blue
-
-                    bool isRedDetected = false;
+                    // Flag to indicate if target color is detected
+                    bool isTargetColorDetected = false;
 
                     // Iterate through all pixels within the screen bounds
-                    for (int x = 0; x < screenshot.Width; x++)
+                    for (int x = Math.Max(0, centerX - circleRadius); x < Math.Min(screenshot.Width, centerX + circleRadius); x++)
                     {
-                        for (int y = 0; y < screenshot.Height; y++)
+                        for (int y = Math.Max(0, centerY - circleRadius); y < Math.Min(screenshot.Height, centerY + circleRadius); y++)
                         {
                             // Check if the pixel is within the circle
                             if (overlayForm.IsWithinCircle(x, y))
                             {
                                 Color pixelColor = screenshot.GetPixel(x, y);
 
-                                // Check if the color is some kind of red
-                                bool isRed = pixelColor.R > redThreshold &&
-                                             (pixelColor.R - pixelColor.G) > redDifferenceThreshold &&
-                                             (pixelColor.R - pixelColor.B) > redDifferenceThreshold;
-
-                                if (isRed)
+                                // Check if the pixel color is within the tolerance range of the target color
+                                if (ColorWithinTolerance(pixelColor, targetColor, colorTolerance))
                                 {
-                                    isRedDetected = true;
-                                    break;
+                                    isTargetColorDetected = true;
+                                    break; // Break out of inner loop
                                 }
                             }
                         }
-                        if (isRedDetected)
-                            break;
+                        if (isTargetColorDetected)
+                            break; // Break out of outer loop
                     }
 
-                    // Debugging: Print if red is detected
-                    Console.WriteLine($"Red Detected: {isRedDetected}");
-
-                    if (isRedDetected)
+                    if (isTargetColorDetected)
                     {
                         // Perform a mouse click at the center of the screen
-                        int centerX = Screen.PrimaryScreen.Bounds.Width / 2;
-                        int centerY = Screen.PrimaryScreen.Bounds.Height / 2;
                         Cursor.Position = new Point(centerX, centerY);
                         mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
                     }
@@ -144,7 +149,21 @@ namespace trigger_3
 
             // Ensure the label is cleared when detection stops
             Invoke(new Action(() => lblAltStatus.Text = string.Empty));
-        }                                                                                                                                      
+        }
+
+
+        private bool ColorWithinTolerance(Color color1, Color color2, int tolerance)
+        {
+            // Calculate the Euclidean distance between the colors
+            int deltaR = Math.Abs(color1.R - color2.R);
+            int deltaG = Math.Abs(color1.G - color2.G);
+            int deltaB = Math.Abs(color1.B - color2.B);
+
+            double distance = Math.Sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB);
+
+            // Check if the distance is within the tolerance range
+            return distance <= tolerance;
+        }
 
     }
 }

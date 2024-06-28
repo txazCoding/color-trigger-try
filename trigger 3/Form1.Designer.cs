@@ -32,8 +32,9 @@
             btnstart = new Button();
             button1 = new Button();
             lblAltStatus = new Label();
-            trackBarRadius = new TrackBar();
-            ((System.ComponentModel.ISupportInitialize)trackBarRadius).BeginInit();
+            btnSelectColor = new Button();
+            colorDialog1 = new ColorDialog();
+            lblSelectedColor = new Label();
             SuspendLayout();
             // 
             // lblStatus
@@ -76,12 +77,24 @@
             lblAltStatus.TabIndex = 3;
             lblAltStatus.Text = "Detecting input";
             // 
-            // trackBarRadius
+            // btnSelectColor
             // 
-            trackBarRadius.Location = new Point(12, 41);
-            trackBarRadius.Name = "trackBarRadius";
-            trackBarRadius.Size = new Size(182, 45);
-            trackBarRadius.TabIndex = 4;
+            btnSelectColor.Location = new Point(12, 87);
+            btnSelectColor.Name = "btnSelectColor";
+            btnSelectColor.Size = new Size(75, 23);
+            btnSelectColor.TabIndex = 4;
+            btnSelectColor.Text = "button2";
+            btnSelectColor.UseVisualStyleBackColor = true;
+            btnSelectColor.Click += btnSelectColor_Click;
+            // 
+            // lblSelectedColor
+            // 
+            lblSelectedColor.AutoSize = true;
+            lblSelectedColor.Location = new Point(12, 113);
+            lblSelectedColor.Name = "lblSelectedColor";
+            lblSelectedColor.Size = new Size(38, 15);
+            lblSelectedColor.TabIndex = 5;
+            lblSelectedColor.Text = "label1";
             // 
             // Form1
             // 
@@ -89,7 +102,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(206, 211);
-            Controls.Add(trackBarRadius);
+            Controls.Add(lblSelectedColor);
+            Controls.Add(btnSelectColor);
             Controls.Add(lblAltStatus);
             Controls.Add(button1);
             Controls.Add(btnstart);
@@ -102,7 +116,6 @@
             ShowInTaskbar = false;
             Text = "Zethon SCT";
             TopMost = true;
-            ((System.ComponentModel.ISupportInitialize)trackBarRadius).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -113,6 +126,8 @@
         private Button btnstart;
         private Button button1;
         private Label lblAltStatus;
-        private TrackBar trackBarRadius;
+        private Button btnSelectColor;
+        private ColorDialog colorDialog1;
+        private Label lblSelectedColor;
     }
 }
