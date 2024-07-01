@@ -4,12 +4,10 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-
 namespace trigger_3
 {
     public partial class Form1 : Form
     {
-
         [DllImport("user32.dll")]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
 
@@ -22,19 +20,15 @@ namespace trigger_3
         private Thread detectionThread;
         private bool detecting;
 
-        private System.Windows.Forms.Timer animationTimer;
-        private string targetText;
-        private int animationStep;
-
         private Form2 overlayForm;
         private int centerX;
         private int centerY;
 
-        Form2 form2; // Declare overlayForm as a field in your Form1 class
-
         private Color targetColor = Color.Red; // Default target color
         private int colorTolerance = 100; // Adjust as needed for sensitivity
 
+        bool mouseDown;
+        private Point offset;
 
         public Form1()
         {
@@ -45,6 +39,10 @@ namespace trigger_3
             // Initialize center coordinates
             centerX = Screen.PrimaryScreen.Bounds.Width / 2;
             centerY = Screen.PrimaryScreen.Bounds.Height / 2;
+
+            string message = "\r\nPress Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nHold Down 'alt' to activate triggerbot\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
+            string title = "Instructions";
+            MessageBox.Show(message, title);
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -82,7 +80,7 @@ namespace trigger_3
         private void DetectColorChange()
         {
             bool altPressed = false;
-            int circleRadius = 50; // Adjust as needed for the radius of the detection circle
+            int circleRadius = 25; // Adjust as needed for the radius of the detection circle
 
             while (detecting)
             {
@@ -96,23 +94,28 @@ namespace trigger_3
 
                 if (altPressed)
                 {
-                    // Capture the screen
-                    Bitmap screenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+                    // Capture only the region around the detection circle
+                    Rectangle captureRect = new Rectangle(centerX - circleRadius, centerY - circleRadius, circleRadius * 2, circleRadius * 2);
+                    Bitmap screenshot = new Bitmap(captureRect.Width, captureRect.Height);
                     using (Graphics g = Graphics.FromImage(screenshot))
                     {
-                        g.CopyFromScreen(0, 0, 0, 0, screenshot.Size);
+                        g.CopyFromScreen(captureRect.Location, Point.Empty, captureRect.Size);
                     }
 
-                    // Flag to indicate if target color is detected
                     bool isTargetColorDetected = false;
+                    int step = 3; // Skip pixels to reduce CPU usage
 
-                    // Iterate through all pixels within the screen bounds
-                    for (int x = Math.Max(0, centerX - circleRadius); x < Math.Min(screenshot.Width, centerX + circleRadius); x++)
+                    // Iterate through pixels within the circle
+                    for (int x = 0; x < screenshot.Width; x += step)
                     {
-                        for (int y = Math.Max(0, centerY - circleRadius); y < Math.Min(screenshot.Height, centerY + circleRadius); y++)
+                        for (int y = 0; y < screenshot.Height; y += step)
                         {
+                            // Convert x, y to global coordinates
+                            int globalX = x + centerX - circleRadius;
+                            int globalY = y + centerY - circleRadius;
+
                             // Check if the pixel is within the circle
-                            if (overlayForm.IsWithinCircle(x, y))
+                            if (IsWithinCircle(globalX, globalY, centerX, centerY, circleRadius))
                             {
                                 Color pixelColor = screenshot.GetPixel(x, y);
 
@@ -139,18 +142,18 @@ namespace trigger_3
                     Invoke(new Action(() => overlayForm.SetCirclePosition(centerX, centerY)));
 
                     // Sleep for a short duration to reduce CPU usage
-                    Thread.Sleep(100);
+                    Thread.Sleep(20); // Shorter sleep duration for quicker detection
                 }
                 else
                 {
                     Invoke(new Action(() => lblAltStatus.Text = "No Input"));
+                    Thread.Sleep(100); // Longer sleep duration when not active
                 }
             }
 
             // Ensure the label is cleared when detection stops
             Invoke(new Action(() => lblAltStatus.Text = string.Empty));
         }
-
 
         private bool ColorWithinTolerance(Color color1, Color color2, int tolerance)
         {
@@ -165,5 +168,76 @@ namespace trigger_3
             return distance <= tolerance;
         }
 
+        private bool IsWithinCircle(int x, int y, int centerX, int centerY, int radius)
+        {
+            int dx = x - centerX;
+            int dy = y - centerY;
+            return (dx * dx + dy * dy) <= (radius * radius);
+        }
+
+        // Event handlers for preset color buttons
+        private void btnRed_Click(object sender, EventArgs e)
+        {
+            targetColor = Color.Red;
+            lblSelectedColor.BackColor = targetColor;
+        }
+
+        private void btnPurple_Click(object sender, EventArgs e)
+        {
+            targetColor = Color.Purple;
+            lblSelectedColor.BackColor = targetColor;
+        }
+
+        private void btnYellow_Click(object sender, EventArgs e)
+        {
+            targetColor = Color.Yellow;
+            lblSelectedColor.BackColor = targetColor;
+        }
+
+        private void lblAltStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            offset.X = e.X;
+            offset.Y = e.Y;
+            mouseDown = true;
+        }
+
+        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown == true)
+            {
+                Point currentScreenPos = PointToScreen(e.Location);
+                Location = new Point(currentScreenPos.X - offset.X, currentScreenPos.Y - offset.Y);
+            }
+        }
+
+        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            this.TopMost = true; // Ensure the form stays on top
+        }
     }
 }
