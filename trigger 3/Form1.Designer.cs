@@ -58,7 +58,7 @@
             trackBarRadius.Value = 25;
             trackBarRadius.Scroll += trackBarRadius_Scroll;
             // 
-            // lblRadiusValue
+            // lblRadiusValu
             // 
             lblRadiusValue.AutoSize = true;
             lblRadiusValue.Location = new Point(12, 230);
