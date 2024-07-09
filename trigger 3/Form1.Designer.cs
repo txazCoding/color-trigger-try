@@ -7,10 +7,11 @@
         private System.Windows.Forms.Label lblAltStatus;
         private System.Windows.Forms.Label lblSelectedColor;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnRed;
         private System.Windows.Forms.Button btnPurple;
         private System.Windows.Forms.Button btnYellow;
+        private System.Windows.Forms.TrackBar trackBarRadius;
+        private System.Windows.Forms.Label lblRadiusValue;
 
         protected override void Dispose(bool disposing)
         {
@@ -24,11 +25,12 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            trackBarRadius = new TrackBar();
+            lblRadiusValue = new Label();
             lblStatus = new Label();
             lblAltStatus = new Label();
             lblSelectedColor = new Label();
             btnStart = new Button();
-            btnStop = new Button();
             btnRed = new Button();
             btnPurple = new Button();
             btnYellow = new Button();
@@ -36,9 +38,34 @@
             panel1 = new Panel();
             contextMenuStrip1 = new ContextMenuStrip(components);
             circleRadius = new TrackBar();
+            label1 = new Label();
+            btnStop = new Button();
+            ((System.ComponentModel.ISupportInitialize)trackBarRadius).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)circleRadius).BeginInit();
             SuspendLayout();
+            // 
+            // trackBarRadius
+            // 
+            trackBarRadius.BackColor = Color.White;
+            trackBarRadius.Location = new Point(9, 217);
+            trackBarRadius.Maximum = 100;
+            trackBarRadius.Minimum = 2;
+            trackBarRadius.Name = "trackBarRadius";
+            trackBarRadius.Size = new Size(200, 45);
+            trackBarRadius.TabIndex = 0;
+            trackBarRadius.TickStyle = TickStyle.None;
+            trackBarRadius.Value = 25;
+            trackBarRadius.Scroll += trackBarRadius_Scroll;
+            // 
+            // lblRadiusValue
+            // 
+            lblRadiusValue.AutoSize = true;
+            lblRadiusValue.Location = new Point(12, 230);
+            lblRadiusValue.Name = "lblRadiusValue";
+            lblRadiusValue.Size = new Size(60, 15);
+            lblRadiusValue.TabIndex = 1;
+            lblRadiusValue.Text = "Radius: 25";
             // 
             // lblStatus
             // 
@@ -84,17 +111,6 @@
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnStart_Click;
             // 
-            // btnStop
-            // 
-            btnStop.FlatStyle = FlatStyle.Flat;
-            btnStop.Location = new Point(114, 50);
-            btnStop.Name = "btnStop";
-            btnStop.Size = new Size(91, 29);
-            btnStop.TabIndex = 4;
-            btnStop.Text = "Stop";
-            btnStop.UseVisualStyleBackColor = true;
-            btnStop.Click += btnStop_Click;
-            // 
             // btnRed
             // 
             btnRed.BackColor = Color.Transparent;
@@ -129,7 +145,7 @@
             btnYellow.Name = "btnYellow";
             btnYellow.Size = new Size(193, 23);
             btnYellow.TabIndex = 7;
-            btnYellow.Text = "Yellow";
+            btnYellow.Text = "Yellow (recommended)";
             btnYellow.UseVisualStyleBackColor = false;
             btnYellow.Click += btnYellow_Click;
             // 
@@ -150,7 +166,7 @@
             panel1.Controls.Add(button1);
             panel1.Controls.Add(lblStatus);
             panel1.Controls.Add(lblAltStatus);
-            panel1.Location = new Point(-1, 0);
+            panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(219, 44);
             panel1.TabIndex = 9;
@@ -166,24 +182,54 @@
             // 
             // circleRadius
             // 
+            circleRadius.Location = new Point(0, 0);
+            circleRadius.Name = "circleRadius";
+            circleRadius.Size = new Size(104, 45);
+            circleRadius.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(28, 197);
+            label1.Name = "label1";
+            label1.Size = new Size(164, 15);
+            label1.TabIndex = 10;
+            label1.Text = "hold 'alt' to activate detection";
+            // 
+            // btnStop
+            // 
+            btnStop.FlatStyle = FlatStyle.Flat;
+            btnStop.Location = new Point(109, 50);
+            btnStop.Name = "btnStop";
+            btnStop.Size = new Size(96, 29);
+            btnStop.TabIndex = 11;
+            btnStop.Text = "Start";
+            btnStop.UseVisualStyleBackColor = true;
+            btnStop.Click += btnStop_Click;
             // 
             // Form1
             // 
-            ClientSize = new Size(217, 228);
+            BackColor = Color.White;
+            ClientSize = new Size(219, 269);
+            Controls.Add(btnStop);
+            Controls.Add(label1);
             Controls.Add(panel1);
             Controls.Add(btnYellow);
             Controls.Add(btnPurple);
             Controls.Add(btnRed);
-            Controls.Add(btnStop);
             Controls.Add(btnStart);
             Controls.Add(lblSelectedColor);
+            Controls.Add(trackBarRadius);
+            Controls.Add(lblRadiusValue);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             Opacity = 0.6D;
             StartPosition = FormStartPosition.CenterScreen;
             TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)trackBarRadius).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)circleRadius).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -193,5 +239,7 @@
         private ContextMenuStrip contextMenuStrip1;
         private TrackBar circleRadius;
         private TrackBar TrackBar_ValueChanged;
+        private Label label1;
+        private Button btnStop;
     }
 }

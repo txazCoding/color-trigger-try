@@ -1,6 +1,6 @@
 ﻿namespace trigger_3
 {
-    partial class Form2
+    partial class Overlayform
     {
         /// <summary>
         /// Required designer variable.
@@ -37,6 +37,7 @@
             ClientSize = new Size(800, 450);
             Name = "Form2";
             Text = "Form2";
+            Load += Form2_Load;
             ResumeLayout(false);
         }
         #endregion
