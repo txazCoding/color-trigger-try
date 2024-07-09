@@ -97,7 +97,76 @@ namespace trigger_3
             string message = "\r\nPress Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nHold Down 'alt' to activate triggerbot\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
             string title = "Instructions";
             MessageBox.Show(message, title);
+            // Add the MouseEnter and MouseLeave event handlers
+            btnStart.MouseEnter += HoverButton_MouseEnter;
+            btnStart.MouseLeave += HoverButton_MouseLeave;
+
+            btnRed.MouseEnter += HoverButton_MouseEnter;
+            btnRed.MouseLeave += HoverButton_MouseLeave;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void HoverButton_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.BackColor = Color.LightBlue; // Change to the color you want on hover
+            }
+        }
+
+        private void HoverButton_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.BackColor = SystemColors.Control; // Change back to the default color
+            }
+        }
+
+        private void HoverButton_MouseEnterRED(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.BackColor = Color.Red; // Change to the color you want on hover
+            }
+        }
+
+        private void HoverButton_MouseLeaveRED(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.BackColor = SystemColors.Control; // Change back to the default color
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         private void trackBarRadius_Scroll(object sender, EventArgs e)
         {

@@ -41,29 +41,29 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             circleRadius = new TrackBar();
             btnRed = new Button();
-            panel2 = new Panel();
-            panel3 = new Panel();
             ((System.ComponentModel.ISupportInitialize)trackBarRadius).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)circleRadius).BeginInit();
-            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // btnSelectTriggerKey
             // 
+            btnSelectTriggerKey.BackColor = Color.Transparent;
             btnSelectTriggerKey.FlatStyle = FlatStyle.Flat;
+            btnSelectTriggerKey.ForeColor = Color.Black;
             btnSelectTriggerKey.Location = new Point(119, 103);
             btnSelectTriggerKey.Name = "btnSelectTriggerKey";
             btnSelectTriggerKey.Size = new Size(86, 80);
             btnSelectTriggerKey.TabIndex = 0;
             btnSelectTriggerKey.Text = "Select Trigger Key";
-            btnSelectTriggerKey.UseVisualStyleBackColor = true;
+            btnSelectTriggerKey.UseVisualStyleBackColor = false;
             btnSelectTriggerKey.Click += btnSelectTriggerKey_Click;
             // 
             // lblSelectedKey
             // 
             lblSelectedKey.AutoSize = true;
-            lblSelectedKey.Location = new Point(59, 189);
+            lblSelectedKey.ForeColor = Color.Black;
+            lblSelectedKey.Location = new Point(119, 188);
             lblSelectedKey.Name = "lblSelectedKey";
             lblSelectedKey.Size = new Size(76, 15);
             lblSelectedKey.TabIndex = 1;
@@ -72,11 +72,11 @@
             // trackBarRadius
             // 
             trackBarRadius.BackColor = Color.White;
-            trackBarRadius.Location = new Point(9, 200);
+            trackBarRadius.Location = new Point(12, 190);
             trackBarRadius.Maximum = 100;
             trackBarRadius.Minimum = 2;
             trackBarRadius.Name = "trackBarRadius";
-            trackBarRadius.Size = new Size(200, 45);
+            trackBarRadius.Size = new Size(101, 45);
             trackBarRadius.TabIndex = 0;
             trackBarRadius.TickStyle = TickStyle.None;
             trackBarRadius.Value = 25;
@@ -85,7 +85,9 @@
             // lblRadiusValue
             // 
             lblRadiusValue.AutoSize = true;
-            lblRadiusValue.Location = new Point(154, 224);
+            lblRadiusValue.BackColor = Color.Transparent;
+            lblRadiusValue.ForeColor = Color.Black;
+            lblRadiusValue.Location = new Point(12, 215);
             lblRadiusValue.Name = "lblRadiusValue";
             lblRadiusValue.Size = new Size(60, 15);
             lblRadiusValue.TabIndex = 1;
@@ -127,14 +129,18 @@
             // 
             // btnStart
             // 
+            btnStart.BackColor = Color.Transparent;
             btnStart.FlatStyle = FlatStyle.Flat;
-            btnStart.Location = new Point(12, 48);
+            btnStart.ForeColor = Color.Black;
+            btnStart.Location = new Point(12, 50);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(193, 47);
             btnStart.TabIndex = 3;
             btnStart.Text = "Start";
-            btnStart.UseVisualStyleBackColor = true;
+            btnStart.UseVisualStyleBackColor = false;
             btnStart.Click += btnStart_Click;
+            btnStart.MouseEnter += HoverButton_MouseEnter;
+            btnStart.MouseLeave += HoverButton_MouseLeave;
             // 
             // btnPurple
             // 
@@ -153,6 +159,7 @@
             // 
             btnYellow.BackColor = Color.Transparent;
             btnYellow.FlatStyle = FlatStyle.Flat;
+            btnYellow.ForeColor = Color.Black;
             btnYellow.Location = new Point(12, 131);
             btnYellow.Name = "btnYellow";
             btnYellow.Size = new Size(101, 23);
@@ -174,7 +181,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(64, 64, 64);
+            panel1.BackColor = Color.DimGray;
             panel1.Controls.Add(button1);
             panel1.Controls.Add(lblStatus);
             panel1.Controls.Add(lblAltStatus);
@@ -204,6 +211,7 @@
             // 
             btnRed.BackColor = Color.Transparent;
             btnRed.FlatStyle = FlatStyle.Flat;
+            btnRed.ForeColor = Color.Black;
             btnRed.Location = new Point(12, 103);
             btnRed.Name = "btnRed";
             btnRed.Size = new Size(101, 23);
@@ -211,30 +219,13 @@
             btnRed.Text = "red";
             btnRed.UseVisualStyleBackColor = false;
             btnRed.Click += btnRed_Click;
-            // 
-            // panel2
-            // 
-            panel2.BackColor = Color.Gray;
-            panel2.Controls.Add(panel3);
-            panel2.ImeMode = ImeMode.NoControl;
-            panel2.Location = new Point(12, 97);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(193, 4);
-            panel2.TabIndex = 11;
-            // 
-            // panel3
-            // 
-            panel3.BackColor = Color.Gray;
-            panel3.Location = new Point(0, 89);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(219, 4);
-            panel3.TabIndex = 12;
+            btnRed.MouseEnter += HoverButton_MouseEnterRED;
+            btnRed.MouseLeave += HoverButton_MouseLeaveRED;
             // 
             // Form1
             // 
             BackColor = Color.White;
             ClientSize = new Size(219, 245);
-            Controls.Add(panel2);
             Controls.Add(btnRed);
             Controls.Add(lblSelectedKey);
             Controls.Add(btnSelectTriggerKey);
@@ -254,7 +245,6 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)circleRadius).EndInit();
-            panel2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -265,7 +255,5 @@
         private TrackBar circleRadius;
         private TrackBar TrackBar_ValueChanged;
         private Button btnRed;
-        private Panel panel2;
-        private Panel panel3;
     }
 }
