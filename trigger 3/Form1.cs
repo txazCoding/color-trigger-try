@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using static System.Windows.Forms.DataFormats;
 
 namespace trigger_3
 {
@@ -80,12 +79,10 @@ namespace trigger_3
         private Color targetColor = Color.Red; // Default target color
         private int colorTolerance = 163; // Adjust as needed for sensitivity
 
-        bool mouseDown;
+        private bool mouseDown;
         private Point offset;
 
-
-
-
+        private Keys triggerKey = Keys.Menu; // Default trigger key (Alt)
 
         public Form1()
         {
@@ -101,11 +98,6 @@ namespace trigger_3
             string title = "Instructions";
             MessageBox.Show(message, title);
         }
-
-
-
-
-
 
         private void trackBarRadius_Scroll(object sender, EventArgs e)
         {
@@ -127,7 +119,7 @@ namespace trigger_3
             }
         }
 
-        private void btnSelectColor_Click(object sender, EventArgs e)
+        public void btnSelectColor_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
 
@@ -148,24 +140,34 @@ namespace trigger_3
             lblStatus.Text = "Done";
         }
 
-        private void DetectColorChange()
+        public void btnSelectTriggerKey_Click(object sender, EventArgs e)
         {
-            bool altPressed = false;
+            KeyCaptureForm keyCaptureForm = new KeyCaptureForm();
+            if (keyCaptureForm.ShowDialog() == DialogResult.OK)
+            {
+                triggerKey = keyCaptureForm.SelectedKey;
+                lblSelectedKey.Text = $"Selected Key: {triggerKey}";
+            }
+        }
+
+        public void DetectColorChange()
+        {
+            bool triggerKeyPressed = false;
             int circleRadius = 0;
 
             while (detecting)
             {
                 Invoke(new Action(() => circleRadius = trackBarRadius.Value)); // Get the current radius from the trackBar safely
 
-                bool altCurrentlyPressed = GetAsyncKeyState(Keys.Menu) < 0;
+                bool triggerKeyCurrentlyPressed = GetAsyncKeyState(triggerKey) < 0;
 
-                if (altCurrentlyPressed != altPressed)
+                if (triggerKeyCurrentlyPressed != triggerKeyPressed)
                 {
-                    altPressed = altCurrentlyPressed;
-                    Invoke(new Action(() => lblAltStatus.Text = altPressed ? "Ready" : "No Input"));
+                    triggerKeyPressed = triggerKeyCurrentlyPressed;
+                    Invoke(new Action(() => lblAltStatus.Text = triggerKeyPressed ? "Ready" : "No Input"));
                 }
 
-                if (altPressed)
+                if (triggerKeyPressed)
                 {
                     // Capture only the region around the detection circle
                     Rectangle captureRect = new Rectangle(centerX - circleRadius, centerY - circleRadius, circleRadius * 2, circleRadius * 2);
@@ -175,10 +177,8 @@ namespace trigger_3
                         g.CopyFromScreen(captureRect.Location, Point.Empty, captureRect.Size);
                     }
 
-
                     bool isTargetColorDetected = false;
                     int step = 1; // Skip pixels to reduce CPU usage
-
 
                     // Iterate through pixels within the screenshot
                     for (int x = 0; x < screenshot.Width; x += step)
@@ -221,7 +221,7 @@ namespace trigger_3
                         }
                     }
 
-                     // Update the circle position on the overlay form
+                    // Update the circle position on the overlay form
                     Invoke(new Action(() => overlayForm.SetCirclePosition(centerX, centerY)));
 
                     // Sleep for a short duration to reduce CPU usage
@@ -237,9 +237,6 @@ namespace trigger_3
             // Ensure the label is cleared when detection stops
             Invoke(new Action(() => lblAltStatus.Text = string.Empty));
         }
-
-
-
 
         private void SimulateMouseClick()
         {
@@ -281,19 +278,19 @@ namespace trigger_3
         }
 
         // Event handlers for preset color buttons
-        private void btnRed_Click(object sender, EventArgs e)
+        public void btnRed_Click(object sender, EventArgs e)
         {
             targetColor = Color.Red;
             lblSelectedColor.BackColor = targetColor;
         }
 
-        private void btnPurple_Click(object sender, EventArgs e)
+        public void btnPurple_Click(object sender, EventArgs e)
         {
             targetColor = Color.Purple;
             lblSelectedColor.BackColor = targetColor;
         }
 
-        private void btnYellow_Click(object sender, EventArgs e)
+        public void btnYellow_Click(object sender, EventArgs e)
         {
             targetColor = Color.Yellow;
             lblSelectedColor.BackColor = targetColor;
@@ -343,6 +340,11 @@ namespace trigger_3
         private void Form1_Activated(object sender, EventArgs e)
         {
             this.TopMost = true; // Ensure the form stays on top
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
         }
 
         [StructLayout(LayoutKind.Sequential)]
