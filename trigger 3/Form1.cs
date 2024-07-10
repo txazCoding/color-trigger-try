@@ -9,7 +9,6 @@ namespace trigger_3
 {
     public partial class Form1 : Form
     {
-        // Raw Input constants
         private const int RIM_TYPEMOUSE = 0;
         private const int RID_INPUT = 0x10000003;
 
@@ -76,13 +75,24 @@ namespace trigger_3
         private int centerX;
         private int centerY;
 
-        private Color targetColor = Color.Red; // Default target color
-        private int colorTolerance = 163; // Adjust as needed for sensitivity
+        private Color targetColor = Color.Red; // default color thing
+        private int colorTolerance = 158; // default sens
 
         private bool mouseDown;
         private Point offset;
 
-        private Keys triggerKey = Keys.Menu; // Default trigger key (Alt)
+        private Keys triggerKey = Keys.Menu;
+
+        private static readonly Color LightRed = Color.FromArgb(255, 200, 200);
+        private static readonly Color LightYellow = Color.FromArgb(255, 255, 200);
+        private static readonly Color LightPurple = Color.FromArgb(230, 200, 255);
+
+        private System.Windows.Forms.Timer hoverTimer;
+        private Button currentHoveredButton;
+        private Color targetHoverColor;
+        private int animationStep;
+        private const int AnimationSteps = 10;
+
 
         public Form1()
         {
@@ -90,34 +100,56 @@ namespace trigger_3
             overlayForm = new Overlayform(25); // Default radius
             overlayForm.Show();
 
-            // Initialize center coordinates
             centerX = Screen.PrimaryScreen.Bounds.Width / 2;
             centerY = Screen.PrimaryScreen.Bounds.Height / 2;
 
             string message = "\r\nPress Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nHold Down 'alt' to activate triggerbot\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
             string title = "Instructions";
             MessageBox.Show(message, title);
-            // Add the MouseEnter and MouseLeave event handlers
+
+            // Attach event handlers for Start button
             btnStart.MouseEnter += HoverButton_MouseEnter;
             btnStart.MouseLeave += HoverButton_MouseLeave;
 
-            btnRed.MouseEnter += HoverButton_MouseEnter;
-            btnRed.MouseLeave += HoverButton_MouseLeave;
+            // Attach event handlers for Red button
+            btnRed.MouseEnter += HoverButton_MouseEnterRed;
+            btnRed.MouseLeave += HoverButton_MouseLeaveRed;
+
+            // Attach event handlers for Yellow button
+            btnYellow.MouseEnter += HoverButton_MouseEnterYellow;
+            btnYellow.MouseLeave += HoverButton_MouseLeaveYellow;
+
+            // Attach event handlers for Purple button
+            btnPurple.MouseEnter += HoverButton_MouseEnterPurple;
+            btnPurple.MouseLeave += HoverButton_MouseLeavePurple;
+
+            lblToleranceValue.Text = $"Tolerance: {colorTolerance}";
+
+            hoverTimer = new System.Windows.Forms.Timer();
+            hoverTimer.Interval = 45;
+            hoverTimer.Tick += HoverTimer_Tick;
         }
 
+        private void HoverTimer_Tick(object sender, EventArgs e)
+        {
+            if (currentHoveredButton == null) return;
 
+            int r = (targetHoverColor.R - currentHoveredButton.BackColor.R) / AnimationSteps;
+            int g = (targetHoverColor.G - currentHoveredButton.BackColor.G) / AnimationSteps;
+            int b = (targetHoverColor.B - currentHoveredButton.BackColor.B) / AnimationSteps;
 
+            currentHoveredButton.BackColor = Color.FromArgb(
+                currentHoveredButton.BackColor.R + r,
+                currentHoveredButton.BackColor.G + g,
+                currentHoveredButton.BackColor.B + b);
 
-
-
-
-
-
-
-
-
-
-
+            animationStep++;
+            if (animationStep >= AnimationSteps)
+            {
+                hoverTimer.Stop();
+                animationStep = 0;
+            }
+        }
 
 
 
@@ -126,7 +158,7 @@ namespace trigger_3
             Button btn = sender as Button;
             if (btn != null)
             {
-                btn.BackColor = Color.LightBlue; // Change to the color you want on hover
+                StartHoverAnimation(btn, Color.LightBlue);
             }
         }
 
@@ -135,28 +167,78 @@ namespace trigger_3
             Button btn = sender as Button;
             if (btn != null)
             {
-                btn.BackColor = SystemColors.Control; // Change back to the default color
+                StartHoverAnimation(btn, SystemColors.Control);
+                btn.BackColor = Color.White;
+
             }
         }
 
-        private void HoverButton_MouseEnterRED(object sender, EventArgs e)
+        private void HoverButton_MouseEnterRed(object sender, EventArgs e)
         {
             Button btn = sender as Button;
             if (btn != null)
             {
-                btn.BackColor = Color.Red; // Change to the color you want on hover
+                StartHoverAnimation(btn, LightRed);
             }
         }
 
-        private void HoverButton_MouseLeaveRED(object sender, EventArgs e)
+        private void HoverButton_MouseLeaveRed(object sender, EventArgs e)
         {
             Button btn = sender as Button;
             if (btn != null)
             {
-                btn.BackColor = SystemColors.Control; // Change back to the default color
+                StartHoverAnimation(btn, SystemColors.Control);
+                btn.BackColor = Color.White;
             }
         }
 
+        private void HoverButton_MouseEnterYellow(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                StartHoverAnimation(btn, LightYellow);
+            }
+        }
+
+        private void HoverButton_MouseLeaveYellow(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                StartHoverAnimation(btn, SystemColors.Control);
+                btn.BackColor = Color.White;
+
+            }
+        }
+
+        private void HoverButton_MouseEnterPurple(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                StartHoverAnimation(btn, LightPurple);
+            }
+        }
+
+        private void HoverButton_MouseLeavePurple(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                StartHoverAnimation(btn, SystemColors.Control);
+                btn.BackColor = Color.White;
+
+            }
+        }
+
+        private void StartHoverAnimation(Button btn, Color targetColor)
+        {
+            currentHoveredButton = btn;
+            targetHoverColor = targetColor;
+            animationStep = 0;
+            hoverTimer.Start();
+        }
 
 
 
@@ -201,22 +283,19 @@ namespace trigger_3
             }
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            detecting = false;
-            detectionThread?.Join();
-            overlayForm.ClearCircle();
-            lblStatus.Text = "Done";
-        }
-
         public void btnSelectTriggerKey_Click(object sender, EventArgs e)
         {
+            Button btn = sender as Button;
+            btn.Text = "Press a key...";
+
             KeyCaptureForm keyCaptureForm = new KeyCaptureForm();
             if (keyCaptureForm.ShowDialog() == DialogResult.OK)
             {
                 triggerKey = keyCaptureForm.SelectedKey;
                 lblSelectedKey.Text = $"Selected Key: {triggerKey}";
             }
+
+            btn.Text = "Select Trigger Key";
         }
 
         public void DetectColorChange()
@@ -414,6 +493,12 @@ namespace trigger_3
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void trackBarTolerance_Scroll(object sender, EventArgs e)
+        {
+            colorTolerance = trackBarTolerance.Value; // Update the tolerance value
+            lblToleranceValue.Text = $"Tolerance: {colorTolerance}";
         }
 
         [StructLayout(LayoutKind.Sequential)]

@@ -26,6 +26,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            trackBarTolerance = new TrackBar();
+            lblToleranceValue = new Label();
             btnSelectTriggerKey = new Button();
             lblSelectedKey = new Label();
             trackBarRadius = new TrackBar();
@@ -41,10 +43,32 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             circleRadius = new TrackBar();
             btnRed = new Button();
+            ((System.ComponentModel.ISupportInitialize)trackBarTolerance).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarRadius).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)circleRadius).BeginInit();
             SuspendLayout();
+            // 
+            // trackBarTolerance
+            // 
+            trackBarTolerance.Location = new Point(12, 238);
+            trackBarTolerance.Maximum = 255;
+            trackBarTolerance.Name = "trackBarTolerance";
+            trackBarTolerance.Size = new Size(193, 45);
+            trackBarTolerance.TabIndex = 12;
+            trackBarTolerance.TickStyle = TickStyle.None;
+            trackBarTolerance.UseWaitCursor = true;
+            trackBarTolerance.Value = 163;
+            trackBarTolerance.Scroll += trackBarTolerance_Scroll;
+            // 
+            // lblToleranceValue
+            // 
+            lblToleranceValue.AutoSize = true;
+            lblToleranceValue.Location = new Point(18, 260);
+            lblToleranceValue.Name = "lblToleranceValue";
+            lblToleranceValue.Size = new Size(38, 15);
+            lblToleranceValue.TabIndex = 11;
+            lblToleranceValue.Text = "label1";
             // 
             // btnSelectTriggerKey
             // 
@@ -87,7 +111,7 @@
             lblRadiusValue.AutoSize = true;
             lblRadiusValue.BackColor = Color.Transparent;
             lblRadiusValue.ForeColor = Color.Black;
-            lblRadiusValue.Location = new Point(12, 215);
+            lblRadiusValue.Location = new Point(17, 214);
             lblRadiusValue.Name = "lblRadiusValue";
             lblRadiusValue.Size = new Size(60, 15);
             lblRadiusValue.TabIndex = 1;
@@ -154,19 +178,24 @@
             btnPurple.Text = "Purple";
             btnPurple.UseVisualStyleBackColor = false;
             btnPurple.Click += btnPurple_Click;
+            btnPurple.MouseEnter += HoverButton_MouseEnterPurple;
+            btnPurple.MouseLeave += HoverButton_MouseLeavePurple;
             // 
             // btnYellow
             // 
             btnYellow.BackColor = Color.Transparent;
             btnYellow.FlatStyle = FlatStyle.Flat;
+            btnYellow.Font = new Font("Segoe UI", 9F);
             btnYellow.ForeColor = Color.Black;
             btnYellow.Location = new Point(12, 131);
             btnYellow.Name = "btnYellow";
             btnYellow.Size = new Size(101, 23);
             btnYellow.TabIndex = 7;
-            btnYellow.Text = "Yellow (recommended)";
+            btnYellow.Text = "Yellow";
             btnYellow.UseVisualStyleBackColor = false;
             btnYellow.Click += btnYellow_Click;
+            btnYellow.MouseEnter += HoverButton_MouseEnterYellow;
+            btnYellow.MouseLeave += HoverButton_MouseLeaveYellow;
             // 
             // button1
             // 
@@ -216,16 +245,15 @@
             btnRed.Name = "btnRed";
             btnRed.Size = new Size(101, 23);
             btnRed.TabIndex = 10;
-            btnRed.Text = "red";
+            btnRed.Text = "Red";
             btnRed.UseVisualStyleBackColor = false;
             btnRed.Click += btnRed_Click;
-            btnRed.MouseEnter += HoverButton_MouseEnterRED;
-            btnRed.MouseLeave += HoverButton_MouseLeaveRED;
             // 
             // Form1
             // 
             BackColor = Color.White;
-            ClientSize = new Size(219, 245);
+            ClientSize = new Size(219, 295);
+            Controls.Add(lblToleranceValue);
             Controls.Add(btnRed);
             Controls.Add(lblSelectedKey);
             Controls.Add(btnSelectTriggerKey);
@@ -235,12 +263,14 @@
             Controls.Add(btnStart);
             Controls.Add(lblRadiusValue);
             Controls.Add(trackBarRadius);
+            Controls.Add(trackBarTolerance);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             Opacity = 0.6D;
             StartPosition = FormStartPosition.CenterScreen;
             TopMost = true;
             Load += Form1_Load_1;
+            ((System.ComponentModel.ISupportInitialize)trackBarTolerance).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBarRadius).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -255,5 +285,7 @@
         private TrackBar circleRadius;
         private TrackBar TrackBar_ValueChanged;
         private Button btnRed;
+        private Label lblToleranceValue;
+        private TrackBar trackBarTolerance;
     }
 }
