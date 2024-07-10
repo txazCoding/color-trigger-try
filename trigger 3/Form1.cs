@@ -103,9 +103,15 @@ namespace trigger_3
             centerX = Screen.PrimaryScreen.Bounds.Width / 2;
             centerY = Screen.PrimaryScreen.Bounds.Height / 2;
 
-            string message = "\r\nPress Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nHold Down 'alt' to activate triggerbot\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
+
+            string message = "\r\nPress Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nhold down the set button to activate detection\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
             string title = "Instructions";
             MessageBox.Show(message, title);
+
+
+            string message2 = "\r\nCheat works on Fullscreen\r\n\r\n Fullscreen recomended because game might lag when in windowed(working on a fix rn)\r\n\r\nTurn off RawInputBuffer\r\n\r\ncircle is not visible ingame when fullscreened\r\n\r\nHave fun!";
+            string title2 = "VALORANT settings";
+            MessageBox.Show(message2, title2);
 
             btnStart.MouseEnter += HoverButton_MouseEnter;
             btnStart.MouseLeave += HoverButton_MouseLeave;
