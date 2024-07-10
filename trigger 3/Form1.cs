@@ -107,19 +107,15 @@ namespace trigger_3
             string title = "Instructions";
             MessageBox.Show(message, title);
 
-            // Attach event handlers for Start button
             btnStart.MouseEnter += HoverButton_MouseEnter;
             btnStart.MouseLeave += HoverButton_MouseLeave;
 
-            // Attach event handlers for Red button
             btnRed.MouseEnter += HoverButton_MouseEnterRed;
             btnRed.MouseLeave += HoverButton_MouseLeaveRed;
 
-            // Attach event handlers for Yellow button
             btnYellow.MouseEnter += HoverButton_MouseEnterYellow;
             btnYellow.MouseLeave += HoverButton_MouseLeaveYellow;
 
-            // Attach event handlers for Purple button
             btnPurple.MouseEnter += HoverButton_MouseEnterPurple;
             btnPurple.MouseLeave += HoverButton_MouseLeavePurple;
 
@@ -246,16 +242,11 @@ namespace trigger_3
 
 
 
-
-
-
-
         private void trackBarRadius_Scroll(object sender, EventArgs e)
         {
-            int radiusValue = trackBarRadius.Value; // Get the current radius from the trackBar
+            int radiusValue = trackBarRadius.Value;
             lblRadiusValue.Text = $"Radius: {radiusValue}";
 
-            // Update the circle radius in overlayForm
             overlayForm.SetCircleRadius(radiusValue);
         }
 
@@ -277,8 +268,7 @@ namespace trigger_3
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 targetColor = colorDialog.Color;
-                // Optionally update UI to reflect selected color
-                // For example, change the background color of a label to show the selected color
+
                 lblSelectedColor.BackColor = targetColor;
             }
         }
@@ -305,7 +295,7 @@ namespace trigger_3
 
             while (detecting)
             {
-                Invoke(new Action(() => circleRadius = trackBarRadius.Value)); // Get the current radius from the trackBar safely
+                Invoke(new Action(() => circleRadius = trackBarRadius.Value));
 
                 bool triggerKeyCurrentlyPressed = GetAsyncKeyState(triggerKey) < 0;
 
@@ -317,7 +307,6 @@ namespace trigger_3
 
                 if (triggerKeyPressed)
                 {
-                    // Capture only the region around the detection circle
                     Rectangle captureRect = new Rectangle(centerX - circleRadius, centerY - circleRadius, circleRadius * 2, circleRadius * 2);
                     Bitmap screenshot = new Bitmap(captureRect.Width, captureRect.Height);
                     using (Graphics g = Graphics.FromImage(screenshot))
@@ -328,12 +317,10 @@ namespace trigger_3
                     bool isTargetColorDetected = false;
                     int step = 1; // Skip pixels to reduce CPU usage
 
-                    // Iterate through pixels within the screenshot
                     for (int x = 0; x < screenshot.Width; x += step)
                     {
                         for (int y = 0; y < screenshot.Height; y += step)
                         {
-                            // Calculate local coordinates
                             int localX = x - screenshot.Width / 2;
                             int localY = y - screenshot.Height / 2;
 
@@ -342,37 +329,34 @@ namespace trigger_3
                             {
                                 Color pixelColor = screenshot.GetPixel(x, y);
 
-                                // Check if the pixel color is within the tolerance range of the target color
                                 if (ColorWithinTolerance(pixelColor, targetColor, colorTolerance))
                                 {
                                     isTargetColorDetected = true;
-                                    break; // Break out of inner loop
+                                    break;
                                 }
                             }
                         }
                         if (isTargetColorDetected)
-                            break; // Break out of outer loop
+                            break;
                     }
 
                     if (isTargetColorDetected)
                     {
                         // Bring the game window to the foreground
-                        IntPtr gameWindow = GetForegroundWindow(); // Assuming the game window is already in the foreground
+                        IntPtr gameWindow = GetForegroundWindow();
                         if (gameWindow != IntPtr.Zero)
                         {
                             SetForegroundWindow(gameWindow);
-                            Thread.Sleep(50); // Give some time for the window to come to the foreground
+                            Thread.Sleep(50);
 
-                            // Perform a mouse click at the center of the screen
+                            //mouse click at the center of the screen
                             Cursor.Position = new Point(centerX, centerY);
                             SimulateMouseClick();
                         }
                     }
 
-                    // Update the circle position on the overlay form
                     Invoke(new Action(() => overlayForm.SetCirclePosition(centerX, centerY)));
 
-                    // Sleep for a short duration to reduce CPU usage
                     Thread.Sleep(1); // Shorter sleep duration for quicker detection
                 }
                 else
@@ -382,7 +366,6 @@ namespace trigger_3
                 }
             }
 
-            // Ensure the label is cleared when detection stops
             Invoke(new Action(() => lblAltStatus.Text = string.Empty));
         }
 
@@ -407,14 +390,12 @@ namespace trigger_3
 
         private bool ColorWithinTolerance(Color color1, Color color2, int tolerance)
         {
-            // Calculate the Euclidean distance between the colors
             int deltaR = Math.Abs(color1.R - color2.R);
             int deltaG = Math.Abs(color1.G - color2.G);
             int deltaB = Math.Abs(color1.B - color2.B);
 
             double distance = Math.Sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB);
 
-            // Check if the distance is within the tolerance range
             return distance <= tolerance;
         }
 
@@ -425,7 +406,6 @@ namespace trigger_3
             return (dx * dx + dy * dy) <= (radius * radius);
         }
 
-        // Event handlers for preset color buttons
         public void btnRed_Click(object sender, EventArgs e)
         {
             targetColor = Color.Red;
@@ -487,7 +467,7 @@ namespace trigger_3
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            this.TopMost = true; // Ensure the form stays on top
+            this.TopMost = true; // the form stays on top
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
@@ -497,7 +477,7 @@ namespace trigger_3
 
         private void trackBarTolerance_Scroll(object sender, EventArgs e)
         {
-            colorTolerance = trackBarTolerance.Value; // Update the tolerance value
+            colorTolerance = trackBarTolerance.Value; // Update  tolerance value
             lblToleranceValue.Text = $"Tolerance: {colorTolerance}";
         }
 
