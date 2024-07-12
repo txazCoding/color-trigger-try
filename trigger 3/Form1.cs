@@ -11,6 +11,9 @@ namespace trigger_3
     {
         private const int RIM_TYPEMOUSE = 0;
         private const int RID_INPUT = 0x10000003;
+        private System.Windows.Forms.Timer fadeTimer;
+        private const int FadeDuration = 40; // Duration in milliseconds per step
+        private const double FadeStep = 0.05; // Step for increasing opacity
 
         [StructLayout(LayoutKind.Sequential)]
         struct RAWINPUTHEADER
@@ -93,7 +96,6 @@ namespace trigger_3
         private int animationStep;
         private const int AnimationSteps = 10;
 
-
         public Form1()
         {
             InitializeComponent();
@@ -102,16 +104,6 @@ namespace trigger_3
 
             centerX = Screen.PrimaryScreen.Bounds.Width / 2;
             centerY = Screen.PrimaryScreen.Bounds.Height / 2;
-
-
-            string message = "\r\nPress Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nhold down the set button to activate detection\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
-            string title = "Instructions";
-            MessageBox.Show(message, title);
-
-
-            string message2 = "\r\nCheat works on Fullscreen\r\n\r\n Fullscreen recomended because game might lag when in windowed(working on a fix rn)\r\n\r\nTurn off RawInputBuffer\r\n\r\ncircle is not visible ingame when fullscreened\r\n\r\nHave fun!";
-            string title2 = "VALORANT settings";
-            MessageBox.Show(message2, title2);
 
             btnStart.MouseEnter += HoverButton_MouseEnter;
             btnStart.MouseLeave += HoverButton_MouseLeave;
@@ -125,11 +117,32 @@ namespace trigger_3
             btnPurple.MouseEnter += HoverButton_MouseEnterPurple;
             btnPurple.MouseLeave += HoverButton_MouseLeavePurple;
 
-            lblToleranceValue.Text = $"Tolerance: {colorTolerance}";
+            lblToleranceValue.Text = $"tolerance: {colorTolerance}";
 
             hoverTimer = new System.Windows.Forms.Timer();
             hoverTimer.Interval = 45;
             hoverTimer.Tick += HoverTimer_Tick;
+
+            // Set initial opacity and start the fade-in effect
+            this.Opacity = 0;
+            fadeTimer = new System.Windows.Forms.Timer();
+            fadeTimer.Interval = FadeDuration;
+            fadeTimer.Tick += FadeTimer_Tick;
+            fadeTimer.Start();
+        }
+
+        private const double MaxOpacity = 0.6; // Maximum opacity
+
+        private void FadeTimer_Tick(object sender, EventArgs e)
+        {
+            if (this.Opacity < MaxOpacity)
+            {
+                this.Opacity += FadeStep;
+            }
+            else
+            {
+                fadeTimer.Stop();
+            }
         }
 
         private void HoverTimer_Tick(object sender, EventArgs e)
@@ -153,8 +166,6 @@ namespace trigger_3
             }
         }
 
-
-
         private void HoverButton_MouseEnter(object sender, EventArgs e)
         {
             Button btn = sender as Button;
@@ -171,7 +182,6 @@ namespace trigger_3
             {
                 StartHoverAnimation(btn, SystemColors.Control);
                 btn.BackColor = Color.White;
-
             }
         }
 
@@ -210,7 +220,6 @@ namespace trigger_3
             {
                 StartHoverAnimation(btn, SystemColors.Control);
                 btn.BackColor = Color.White;
-
             }
         }
 
@@ -230,7 +239,6 @@ namespace trigger_3
             {
                 StartHoverAnimation(btn, SystemColors.Control);
                 btn.BackColor = Color.White;
-
             }
         }
 
@@ -241,12 +249,6 @@ namespace trigger_3
             animationStep = 0;
             hoverTimer.Start();
         }
-
-
-
-
-
-
 
         private void trackBarRadius_Scroll(object sender, EventArgs e)
         {
@@ -288,16 +290,16 @@ namespace trigger_3
             if (keyCaptureForm.ShowDialog() == DialogResult.OK)
             {
                 triggerKey = keyCaptureForm.SelectedKey;
-                lblSelectedKey.Text = $"Selected Key: {triggerKey}";
+                lblSelectedKey.Text = $"Selected: {triggerKey}";
             }
 
             btn.Text = "Select Trigger Key";
         }
 
-        public void DetectColorChange()
+        private void DetectColorChange()
         {
             bool triggerKeyPressed = false;
-            int circleRadius = 0;
+            int circleRadius = 25;
 
             while (detecting)
             {
@@ -415,24 +417,28 @@ namespace trigger_3
         public void btnRed_Click(object sender, EventArgs e)
         {
             targetColor = Color.Red;
-            lblSelectedColor.BackColor = targetColor;
+            lblSelectedColor.BackColor = Color.IndianRed;
+            lblSelectedColor.Text = "Red";
         }
 
         public void btnPurple_Click(object sender, EventArgs e)
         {
             targetColor = Color.Purple;
-            lblSelectedColor.BackColor = targetColor;
+            lblSelectedColor.BackColor = Color.MediumPurple;
+            lblSelectedColor.ForeColor = Color.WhiteSmoke;
+            lblSelectedColor.Text = "Purple";
         }
 
         public void btnYellow_Click(object sender, EventArgs e)
         {
             targetColor = Color.Yellow;
-            lblSelectedColor.BackColor = targetColor;
+            lblSelectedColor.BackColor = LightYellow;
+            lblSelectedColor.ForeColor = Color.Black;
+            lblSelectedColor.Text = "Yellow";
         }
 
         private void lblAltStatus_Click(object sender, EventArgs e)
         {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -442,7 +448,6 @@ namespace trigger_3
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -468,7 +473,6 @@ namespace trigger_3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void Form1_Activated(object sender, EventArgs e)
@@ -478,13 +482,32 @@ namespace trigger_3
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
-
         }
 
         private void trackBarTolerance_Scroll(object sender, EventArgs e)
         {
             colorTolerance = trackBarTolerance.Value; // Update  tolerance value
             lblToleranceValue.Text = $"Tolerance: {colorTolerance}";
+        }
+
+        private void lblSelectedColor_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            string message = "Press Start to Activate the Detection\r\n\r\nChoose Color (yellow recommended)\r\n\r\nhold down the set button to activate detection\r\n\r\nDraggable window, put anywhere you want\r\n\r\nHave fun!";
+            string title = "UI Settings";
+            MessageBox.Show(message, title);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            string message2 = "Fullscreen recomended because game might lag when in windowed(working on a fix rn)\r\n\r\nTurn off RawInputBuffer\r\n\r\ncircle is not visible ingame when fullscreened\r\n\r\nHave fun!";
+            string title2 = "VALORANT settings";
+            MessageBox.Show(message2, title2);
         }
 
         [StructLayout(LayoutKind.Sequential)]
