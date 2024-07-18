@@ -131,7 +131,7 @@ namespace trigger_3
             fadeTimer.Start();
         }
 
-        private const double MaxOpacity = 0.6; // Maximum opacity
+        private const double MaxOpacity = 0.7; // Maximum opacity
 
         private void FadeTimer_Tick(object sender, EventArgs e)
         {
@@ -418,7 +418,7 @@ namespace trigger_3
         {
             targetColor = Color.Red;
             lblSelectedColor.BackColor = Color.IndianRed;
-            lblSelectedColor.Text = "Red";
+            lblSelectedColor.Text = "Color: Red";
         }
 
         public void btnPurple_Click(object sender, EventArgs e)
@@ -426,7 +426,7 @@ namespace trigger_3
             targetColor = Color.Purple;
             lblSelectedColor.BackColor = Color.MediumPurple;
             lblSelectedColor.ForeColor = Color.WhiteSmoke;
-            lblSelectedColor.Text = "Purple";
+            lblSelectedColor.Text = "Color: Purple";
         }
 
         public void btnYellow_Click(object sender, EventArgs e)
@@ -434,7 +434,7 @@ namespace trigger_3
             targetColor = Color.Yellow;
             lblSelectedColor.BackColor = LightYellow;
             lblSelectedColor.ForeColor = Color.Black;
-            lblSelectedColor.Text = "Yellow";
+            lblSelectedColor.Text = "Color: Yellow";
         }
 
         private void lblAltStatus_Click(object sender, EventArgs e)
@@ -508,6 +508,50 @@ namespace trigger_3
             string message2 = "Fullscreen recomended because game might lag when in windowed(working on a fix rn)\r\n\r\nTurn off RawInputBuffer\r\n\r\ncircle is not visible ingame when fullscreened\r\n\r\nHave fun!";
             string title2 = "VALORANT settings";
             MessageBox.Show(message2, title2);
+        }
+
+
+        private void UIHelp_MouseEnter_1(object sender, EventArgs e)
+        {
+            UIHelp.Text = "Help";
+
+        }
+
+        private void UIHelp_MouseLeave(object sender, EventArgs e)
+        {
+            UIHelp.Text = "UI";
+
+        }
+
+        private void GameHelp_MouseEnter(object sender, EventArgs e)
+        {
+            GameHelp.Text = "Help";
+        }
+
+
+        private void GameHelp_MouseLeave(object sender, EventArgs e)
+        {
+            GameHelp.Text = "Game";
+
+        }
+
+        private void button1_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                StartHoverAnimation(btn, Color.Red);
+            }
+        }
+
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                StartHoverAnimation(btn, SystemColors.Control);
+                btn.BackColor = Color.LightPink;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]

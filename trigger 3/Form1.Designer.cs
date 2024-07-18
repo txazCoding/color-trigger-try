@@ -44,8 +44,8 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             circleRadius = new TrackBar();
             btnRed = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            UIHelp = new Button();
+            GameHelp = new Button();
             panel3 = new Panel();
             panel4 = new Panel();
             ((System.ComponentModel.ISupportInitialize)trackBarTolerance).BeginInit();
@@ -70,6 +70,7 @@
             // 
             lblToleranceValue.AutoSize = true;
             lblToleranceValue.Font = new Font("Tahoma", 9F);
+            lblToleranceValue.ForeColor = Color.Black;
             lblToleranceValue.Location = new Point(18, 260);
             lblToleranceValue.Name = "lblToleranceValue";
             lblToleranceValue.Size = new Size(38, 14);
@@ -84,7 +85,7 @@
             btnSelectTriggerKey.ForeColor = Color.Black;
             btnSelectTriggerKey.Location = new Point(119, 103);
             btnSelectTriggerKey.Name = "btnSelectTriggerKey";
-            btnSelectTriggerKey.Size = new Size(86, 80);
+            btnSelectTriggerKey.Size = new Size(88, 80);
             btnSelectTriggerKey.TabIndex = 0;
             btnSelectTriggerKey.Text = "Select Trigger Key";
             btnSelectTriggerKey.UseVisualStyleBackColor = false;
@@ -153,13 +154,14 @@
             lblSelectedColor.AutoSize = true;
             lblSelectedColor.BackColor = Color.Transparent;
             lblSelectedColor.BorderStyle = BorderStyle.FixedSingle;
+            lblSelectedColor.FlatStyle = FlatStyle.Flat;
             lblSelectedColor.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblSelectedColor.ForeColor = Color.Black;
-            lblSelectedColor.Location = new Point(144, 15);
+            lblSelectedColor.Location = new Point(73, 14);
             lblSelectedColor.Name = "lblSelectedColor";
-            lblSelectedColor.Size = new Size(39, 18);
+            lblSelectedColor.Size = new Size(44, 18);
             lblSelectedColor.TabIndex = 2;
-            lblSelectedColor.Text = "Color";
+            lblSelectedColor.Text = "Color:";
             lblSelectedColor.TextAlign = ContentAlignment.MiddleCenter;
             lblSelectedColor.Click += lblSelectedColor_Click;
             // 
@@ -171,7 +173,7 @@
             btnStart.ForeColor = Color.Black;
             btnStart.Location = new Point(12, 50);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(193, 47);
+            btnStart.Size = new Size(195, 47);
             btnStart.TabIndex = 3;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = false;
@@ -213,26 +215,28 @@
             // 
             // button1
             // 
-            button1.BackColor = Color.White;
-            button1.ForeColor = Color.Black;
-            button1.Location = new Point(185, 12);
+            button1.BackColor = Color.FromArgb(255, 192, 255);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.ForeColor = Color.FromArgb(192, 0, 0);
+            button1.Location = new Point(182, 12);
             button1.Name = "button1";
-            button1.Size = new Size(24, 23);
+            button1.Size = new Size(24, 22);
             button1.TabIndex = 8;
-            button1.Text = "X";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+            button1.MouseEnter += button1_MouseEnter;
+            button1.MouseLeave += button1_MouseLeave;
             // 
             // panel1
             // 
-            panel1.BackColor = Color.Transparent;
+            panel1.BackColor = Color.FromArgb(255, 192, 255);
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(label1);
-            panel1.Controls.Add(button1);
             panel1.Controls.Add(lblSelectedColor);
-            panel1.Location = new Point(-5, 0);
+            panel1.Controls.Add(button1);
+            panel1.Controls.Add(label1);
+            panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(230, 44);
+            panel1.Size = new Size(219, 44);
             panel1.TabIndex = 9;
             panel1.Paint += panel1_Paint;
             panel1.MouseDown += panel1_MouseDown;
@@ -244,7 +248,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Viner Hand ITC", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Black;
-            label1.Location = new Point(16, 12);
+            label1.Location = new Point(11, 12);
             label1.Name = "label1";
             label1.Size = new Size(65, 26);
             label1.TabIndex = 9;
@@ -276,37 +280,43 @@
             btnRed.UseVisualStyleBackColor = false;
             btnRed.Click += btnRed_Click;
             // 
-            // button2
+            // UIHelp
             // 
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Tahoma", 8.25F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            button2.Location = new Point(119, 260);
-            button2.Name = "button2";
-            button2.Size = new Size(42, 23);
-            button2.TabIndex = 14;
-            button2.Text = "UI";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            UIHelp.FlatStyle = FlatStyle.Flat;
+            UIHelp.Font = new Font("Tahoma", 8.25F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            UIHelp.ForeColor = Color.Black;
+            UIHelp.Location = new Point(119, 260);
+            UIHelp.Name = "UIHelp";
+            UIHelp.Size = new Size(42, 23);
+            UIHelp.TabIndex = 14;
+            UIHelp.Text = "UI";
+            UIHelp.UseVisualStyleBackColor = true;
+            UIHelp.Click += button2_Click;
+            UIHelp.MouseEnter += UIHelp_MouseEnter_1;
+            UIHelp.MouseLeave += UIHelp_MouseLeave;
             // 
-            // button3
+            // GameHelp
             // 
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.Font = new Font("Tahoma", 6.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            button3.Location = new Point(43, 46);
-            button3.Name = "button3";
-            button3.Size = new Size(42, 23);
-            button3.TabIndex = 15;
-            button3.Text = "Game";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            GameHelp.FlatStyle = FlatStyle.Flat;
+            GameHelp.Font = new Font("Tahoma", 6.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            GameHelp.ForeColor = Color.Black;
+            GameHelp.Location = new Point(44, 46);
+            GameHelp.Name = "GameHelp";
+            GameHelp.Size = new Size(42, 23);
+            GameHelp.TabIndex = 15;
+            GameHelp.Text = "Game";
+            GameHelp.UseVisualStyleBackColor = true;
+            GameHelp.Click += button3_Click;
+            GameHelp.MouseEnter += GameHelp_MouseEnter;
+            GameHelp.MouseLeave += GameHelp_MouseLeave;
             // 
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Controls.Add(button3);
+            panel3.Controls.Add(GameHelp);
             panel3.Location = new Point(119, 213);
             panel3.Name = "panel3";
-            panel3.Size = new Size(87, 71);
+            panel3.Size = new Size(88, 71);
             panel3.TabIndex = 14;
             // 
             // panel4
@@ -321,7 +331,7 @@
             // 
             BackColor = Color.White;
             ClientSize = new Size(219, 295);
-            Controls.Add(button2);
+            Controls.Add(UIHelp);
             Controls.Add(lblStatus);
             Controls.Add(lblAltStatus);
             Controls.Add(lblToleranceValue);
@@ -362,8 +372,8 @@
         private Label lblToleranceValue;
         private TrackBar trackBarTolerance;
         private Label label1;
-        private Button button2;
-        private Button button3;
+        private Button UIHelp;
+        private Button GameHelp;
         private Panel panel3;
         private Panel panel4;
     }
