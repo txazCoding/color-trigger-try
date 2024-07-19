@@ -290,7 +290,7 @@ namespace trigger_3
             if (keyCaptureForm.ShowDialog() == DialogResult.OK)
             {
                 triggerKey = keyCaptureForm.SelectedKey;
-                lblSelectedKey.Text = $"Selected: {triggerKey}";
+                lblSelectedKey.Text = $"Key: {triggerKey}";
             }
 
             btn.Text = "Select Trigger Key";
@@ -552,6 +552,11 @@ namespace trigger_3
                 StartHoverAnimation(btn, SystemColors.Control);
                 btn.BackColor = Color.LightPink;
             }
+        }
+
+        private void lblSelectedKey_Click(object sender, EventArgs e)
+        {
+
         }
 
         [StructLayout(LayoutKind.Sequential)]

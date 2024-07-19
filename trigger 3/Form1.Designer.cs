@@ -53,6 +53,7 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)circleRadius).BeginInit();
             panel3.SuspendLayout();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // trackBarTolerance
@@ -97,16 +98,17 @@
             lblSelectedKey.FlatStyle = FlatStyle.Flat;
             lblSelectedKey.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblSelectedKey.ForeColor = Color.Black;
-            lblSelectedKey.Location = new Point(120, 190);
+            lblSelectedKey.Location = new Point(0, 3);
             lblSelectedKey.Name = "lblSelectedKey";
-            lblSelectedKey.Size = new Size(59, 14);
+            lblSelectedKey.Size = new Size(35, 14);
             lblSelectedKey.TabIndex = 1;
-            lblSelectedKey.Text = "Selected:";
+            lblSelectedKey.Text = "Key: ";
+            lblSelectedKey.Click += lblSelectedKey_Click;
             // 
             // trackBarRadius
             // 
             trackBarRadius.BackColor = Color.White;
-            trackBarRadius.Location = new Point(16, 190);
+            trackBarRadius.Location = new Point(3, 3);
             trackBarRadius.Maximum = 100;
             trackBarRadius.Minimum = 2;
             trackBarRadius.Name = "trackBarRadius";
@@ -122,7 +124,7 @@
             lblRadiusValue.BackColor = Color.Transparent;
             lblRadiusValue.Font = new Font("Tahoma", 9F);
             lblRadiusValue.ForeColor = Color.Black;
-            lblRadiusValue.Location = new Point(17, 214);
+            lblRadiusValue.Location = new Point(3, 34);
             lblRadiusValue.Name = "lblRadiusValue";
             lblRadiusValue.Size = new Size(63, 14);
             lblRadiusValue.TabIndex = 1;
@@ -131,20 +133,22 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
+            lblStatus.Font = new Font("Tahoma", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblStatus.ForeColor = Color.Black;
             lblStatus.Location = new Point(120, 217);
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(42, 15);
+            lblStatus.Size = new Size(42, 14);
             lblStatus.TabIndex = 0;
-            lblStatus.Text = "Status:";
+            lblStatus.Text = "Status";
             // 
             // lblAltStatus
             // 
             lblAltStatus.AutoSize = true;
+            lblAltStatus.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblAltStatus.ForeColor = Color.Black;
             lblAltStatus.Location = new Point(120, 239);
             lblAltStatus.Name = "lblAltStatus";
-            lblAltStatus.Size = new Size(52, 15);
+            lblAltStatus.Size = new Size(55, 14);
             lblAltStatus.TabIndex = 1;
             lblAltStatus.Text = "no Input";
             lblAltStatus.Click += lblAltStatus_Click;
@@ -300,7 +304,7 @@
             GameHelp.FlatStyle = FlatStyle.Flat;
             GameHelp.Font = new Font("Tahoma", 6.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
             GameHelp.ForeColor = Color.Black;
-            GameHelp.Location = new Point(44, 46);
+            GameHelp.Location = new Point(45, 69);
             GameHelp.Name = "GameHelp";
             GameHelp.Size = new Size(42, 23);
             GameHelp.TabIndex = 15;
@@ -314,17 +318,20 @@
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
             panel3.Controls.Add(GameHelp);
-            panel3.Location = new Point(119, 213);
+            panel3.Controls.Add(lblSelectedKey);
+            panel3.Location = new Point(119, 190);
             panel3.Name = "panel3";
-            panel3.Size = new Size(88, 71);
+            panel3.Size = new Size(88, 94);
             panel3.TabIndex = 14;
             // 
             // panel4
             // 
             panel4.BorderStyle = BorderStyle.FixedSingle;
-            panel4.Location = new Point(12, 186);
+            panel4.Controls.Add(lblRadiusValue);
+            panel4.Controls.Add(trackBarRadius);
+            panel4.Location = new Point(12, 190);
             panel4.Name = "panel4";
-            panel4.Size = new Size(101, 98);
+            panel4.Size = new Size(101, 94);
             panel4.TabIndex = 16;
             // 
             // Form1
@@ -336,14 +343,11 @@
             Controls.Add(lblAltStatus);
             Controls.Add(lblToleranceValue);
             Controls.Add(btnRed);
-            Controls.Add(lblSelectedKey);
             Controls.Add(btnSelectTriggerKey);
             Controls.Add(panel1);
             Controls.Add(btnYellow);
             Controls.Add(btnPurple);
             Controls.Add(btnStart);
-            Controls.Add(lblRadiusValue);
-            Controls.Add(trackBarRadius);
             Controls.Add(trackBarTolerance);
             Controls.Add(panel3);
             Controls.Add(panel4);
@@ -359,6 +363,9 @@
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)circleRadius).EndInit();
             panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
